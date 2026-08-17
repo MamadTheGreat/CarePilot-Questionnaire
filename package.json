@@ -1,0 +1,9 @@
+{
+  "name": "carepilot-survey-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Persian multi-step research questionnaires with aggregate and individual response storage.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

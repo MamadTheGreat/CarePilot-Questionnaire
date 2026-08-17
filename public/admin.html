@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>داشبورد ارزیابی پرسشنامه‌ها</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <section class="admin-card">
+      <div class="admin-heading">
+        <div>
+          <p class="eyebrow">نمای ارزیابی</p>
+          <h1>نتایج پرسشنامه‌ها</h1>
+        </div>
+        <a class="secondary-button" id="export-link" href="#">دریافت CSV</a>
+      </div>
+      <div id="admin-content" class="admin-content"></div>
+    </section>
+  </main>
+  <script>
+    const key = new URLSearchParams(location.search).get("key") || "";
+    const api = (path) => `${path}${path.includes("?") ? "&" : "?"}key=${encodeURIComponent(key)}`;
+    const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    }[char]));
+    const chartColors = ["#1d4ed8", "#0f766e", "#d97706", "#b42318", "#7c3aed", "#0891b2", "#be185d", "#4d7c0f"];
+    const optionColor = (index) => chartColors[index % chartColors.length];
+    const pieGradient = (counts) => {
+      const entries = Object.entries(counts || {}).filter(([, count]) => Number(count) > 0);
+      const total = entries.reduce((sum, [, count]) => sum + Number(count), 0);
+      if (!total) return "conic-gradient(#edf0f5 0 100%)";
+      let cursor = 0;
+      const segments = entries.map(([label, count], index) => {
+        const start = cursor;
+        cursor += (Number(count) / total) * 100;
+        return `${optionColor(index)} ${start}% ${cursor}%`;
+      });
+      return `conic-gradient(${segments.join(", ")})`;
+    };
+
+    document.querySelector("#export-link").href = api("/api/admin/export.csv");
+
+    async function loadDashboard() {
+      const summaryResponse = await fetch(api("/api/admin/summary"));
+      if (!summaryResponse.ok) throw new Error("unauthorized");
+      const summary = await summaryResponse.json();
+      const responsesResponse = await fetch(api("/api/admin/responses"));
+      if (!responsesResponse.ok) throw new Error("responses_failed");
+      const responses = await responsesResponse.json();
+      const formsResponse = await fetch("/api/questionnaires");
+      const forms = await formsResponse.json();
+      const formsById = Object.fromEntries(forms.map((form) => [form.id, form.title]));
+      const content = document.querySelector("#admin-content");
+
+      const formTotals = Object.fromEntries(summary.forms.map((form) => [form.questionnaireId, form.totalResponses]));
+      content.innerHTML = `<div class="metrics-grid">
+          <div class="metric"><strong>${summary.totalResponses}</strong><span>تعداد افراد شرکت‌کننده کل</span></div>
+          <div class="metric"><strong>${formTotals.patients || 0}</strong><span>تعداد تکمیل پرسشنامه بیمار</span></div>
+          <div class="metric"><strong>${formTotals.caregivers || 0}</strong><span>تعداد تکمیل پرسشنامه همراه بیمار</span></div>
+          <div class="metric"><strong>${formTotals.clinicians || 0}</strong><span>تعداد تکمیل پرسشنامه کارکنان درمانی</span></div>
+        </div>` +
+        summary.forms.map((form) => `
+          <section class="result-section">
+            <div class="result-header"><h2>${escapeHtml(form.title)}</h2><span>${form.totalResponses} پاسخ</span></div>
+            ${form.questions.map((q) => `
+              <details class="result-question">
+                <summary>${escapeHtml(q.label)}<small>${q.hypotheses.length ? escapeHtml(q.hypotheses.join("، ")) : "اطلاعات پایه"}</small></summary>
+                <div class="result-visual">
+                  <div class="pie-chart" role="img" aria-label="نمودار توزیع پاسخ‌ها" style="background: ${pieGradient(q.counts)}"></div>
+                  <div class="result-values">
+                    ${Object.entries(q.counts).map(([label, count], index) => `<div><span class="option-label"><i class="option-swatch" style="background:${optionColor(index)}"></i>${escapeHtml(label)}</span><b style="color:${optionColor(index)}">${count}</b></div>`).join("") || "<p>هنوز پاسخی ثبت نشده است.</p>"}
+                  </div>
+                </div>
+              </details>`).join("")}
+          </section>`).join("") +
+        `<section class="result-section">
+          <div class="result-header"><h2>پاسخ‌های فردی</h2><span>شناسه‌ها ناشناس هستند</span></div>
+          <div id="individual-responses">
+            ${responses.length
+              ? responses.slice().reverse().map((response) => `
+                <details class="result-question">
+                  <summary>${escapeHtml(formsById[response.questionnaire] || response.questionnaire)} — ${new Date(response.receivedAt).toLocaleString("fa-IR")}</summary>
+                  <p class="response-meta">شناسه ناشناس: ${escapeHtml(response.responseId)} | شیوه تکمیل: ${response.completionMode === "interviewer" ? "مصاحبه‌گر" : "خوداظهاری"}</p>
+                  <div class="result-values">
+                    ${Object.entries(response.answers || {}).map(([id, value]) => `<div><span>${escapeHtml(id)}</span><b>${escapeHtml(Array.isArray(value) ? value.join("، ") : value || "—")}</b></div>`).join("")}
+                  </div>
+                </details>`).join("")
+              : "<p>هنوز پاسخی ثبت نشده است.</p>"}
+          </div>
+        </section>`;
+    }
+
+    loadDashboard().catch(() => {
+      document.querySelector("#admin-content").innerHTML = "<p class='validation'>بارگذاری داشبورد انجام نشد. کلید دسترسی مدیر را بررسی کنید.</p>";
+    });
+  </script>
+</body>
+</html>

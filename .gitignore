@@ -1,0 +1,6 @@
+data/responses.ndjson
+.env
+.env.*
+!.env.example
+node_modules/
+

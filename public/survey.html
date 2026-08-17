@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>پرسشنامه</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="survey-shell">
+    <section class="survey-card" aria-labelledby="question-title">
+      <div class="survey-topline">
+        <a class="back-link" href="/" aria-label="بازگشت به انتخاب پرسشنامه" hidden>بازگشت</a>
+        <span id="step-label" class="step-label"></span>
+      </div>
+      <div class="progress-track" id="progress-track" aria-hidden="true" hidden><span id="progress-bar"></span></div>
+      <p id="form-title" class="eyebrow"></p>
+      <div id="intro" class="intro" hidden></div>
+      <div id="question-wrap" hidden>
+        <p id="question-hint" class="question-hint"></p>
+        <h1 id="question-title"></h1>
+        <div id="answer-area"></div>
+        <div id="validation" class="validation" role="alert" hidden></div>
+      </div>
+      <div id="success" class="success" hidden>
+        <div class="success-mark" aria-hidden="true">✓</div>
+        <h1>پاسخ شما ثبت شد</h1>
+        <p>از مشارکت شما سپاسگزاریم.</p>
+        <a class="secondary-button" href="/">بازگشت به فهرست پرسشنامه‌ها</a>
+      </div>
+      <div id="actions" class="actions" hidden>
+        <button id="prev" class="secondary-button" type="button">سؤال قبلی</button>
+        <button id="next" class="primary-button" type="button">سؤال بعدی</button>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>انتخاب پرسشنامه</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="landing-shell">
+    <section class="landing-card">
+      <p class="eyebrow">پرسشنامه</p>
+      <h1>لطفاً پرسشنامه مناسب را انتخاب کنید</h1>
+      <p class="muted">سؤال‌ها به‌صورت مرحله‌ای نمایش داده می‌شوند. پاسخ‌ها ناشناس ثبت می‌شوند.</p>
+      <div id="form-list" class="form-list" aria-live="polite"></div>
+    </section>
+  </main>
+  <script>
+    fetch("/api/questionnaires")
+      .then((r) => r.json())
+      .then((forms) => {
+        document.querySelector("#form-list").innerHTML = forms.map((form) => `
+          <a class="form-link" href="/survey.html?form=${encodeURIComponent(form.id)}">
+            <span>${form.title}</span>
+            <span class="arrow" aria-hidden="true">←</span>
+          </a>`).join("");
+      });
+  </script>
+</body>
+</html>
