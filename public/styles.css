@@ -13,7 +13,7 @@
 }
 
 * { box-sizing: border-box; }
-html { font-family: "B Nazanin", "BNazanin", "MS Nazanin", Tahoma, "Segoe UI", sans-serif; background: var(--canvas); color: var(--ink); }
+html { font-family: "B Nazanin", "BNazanin", "MS Nazanin", Tahoma, "Segoe UI", sans-serif; background: var(--canvas); color: var(--ink); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0; min-width: 320px; }
 button, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -96,7 +96,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .response-meta { color: var(--muted); font-size: 13px; line-height: 1.8; margin: 12px 0 0; direction: ltr; text-align: right; overflow-wrap: anywhere; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-@media (max-width: 560px) {
+@media (max-width: 1000px) {
   .landing-shell, .survey-shell, .admin-shell { padding: 12px; }
   .landing-card, .survey-card, .admin-card { border-radius: 18px; }
   .landing-card { padding: 24px 18px; }
