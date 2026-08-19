@@ -97,8 +97,17 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 @media (max-width: 1000px) {
-  .landing-shell, .survey-shell, .admin-shell { padding: 12px; }
-  .landing-card, .survey-card, .admin-card { border-radius: 18px; }
+  .landing-shell, .survey-shell, .admin-shell {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 12px;
+    overflow-x: hidden;
+  }
+  .landing-card, .survey-card, .admin-card {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    border-radius: 18px;
+  }
   .landing-card { padding: 24px 18px; }
   .survey-card { min-height: calc(100dvh - 24px); padding: 20px 16px; }
   .admin-card { padding: 20px 16px; }
