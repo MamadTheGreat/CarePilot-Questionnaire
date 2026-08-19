@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>داشبورد ارزیابی پرسشنامه‌ها</title>
+  <script>
+    (() => {
+      const ua = navigator.userAgent || "";
+      const isPhone = /Android|iPhone|iPad|iPod|Mobile/i.test(ua)
+        && (navigator.maxTouchPoints > 0 || "ontouchstart" in window);
+      if (isPhone) document.documentElement.classList.add("phone-device");
+    })();
+  </script>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>

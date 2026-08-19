@@ -14,7 +14,8 @@
 
 * { box-sizing: border-box; }
 html { font-family: "B Nazanin", "BNazanin", "MS Nazanin", Tahoma, "Segoe UI", sans-serif; background: var(--canvas); color: var(--ink); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { margin: 0; min-width: 320px; }
+body { margin: 0; min-width: 320px; width: 100%; }
+#app { width: 100%; min-width: 0; }
 button, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 
@@ -98,14 +99,16 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 
 @media (max-width: 1000px) {
   .landing-shell, .survey-shell, .admin-shell {
-    width: 100vw;
-    max-width: 100vw;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
     padding: 12px;
     overflow-x: hidden;
   }
   .landing-card, .survey-card, .admin-card {
-    width: calc(100vw - 24px);
-    max-width: calc(100vw - 24px);
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
     border-radius: 18px;
   }
   .landing-card { padding: 24px 18px; }
@@ -138,6 +141,40 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   .actions { flex-direction: column-reverse; }
   .primary-button, .secondary-button { width: 100%; }
   .metrics-grid { grid-template-columns: 1fr; }
+}
+
+/* Phones can expose a desktop-sized viewport inside the Apps Script iframe.
+   Use the touch pointer as a second mobile signal so the card still fills
+   the available screen even when Chrome's Desktop site mode is enabled. */
+@media (hover: none) and (pointer: coarse) {
+  body, #app, .landing-shell, .survey-shell, .admin-shell {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+  .landing-card, .survey-card, .admin-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+}
+
+html.phone-device body,
+html.phone-device #app,
+html.phone-device .landing-shell,
+html.phone-device .survey-shell,
+html.phone-device .admin-shell {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+html.phone-device .landing-card,
+html.phone-device .survey-card,
+html.phone-device .admin-card {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
