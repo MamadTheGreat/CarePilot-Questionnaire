@@ -41,6 +41,7 @@ h1 { font-size: clamp(23px, 4vw, 34px); line-height: 1.5; margin-bottom: 16px; }
 h2 { font-size: 20px; line-height: 1.6; }
 .muted, .intro p, .question-hint, .choice, .other-box { font-family: "B Nazanin", "BNazanin", "MS Nazanin", Tahoma, "Segoe UI", sans-serif; }
 .muted, .intro p, .question-hint { color: var(--muted); line-height: 1.9; }
+.intro p { color: #111827; }
 .form-list { display: grid; gap: 12px; margin-top: 28px; }
 .form-link { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); text-decoration: none; transition: .18s ease; }
 .form-link:hover, .form-link:focus-visible { border-color: var(--primary); background: var(--soft-blue); outline: none; }
@@ -98,13 +99,36 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 @media (max-width: 560px) {
   .landing-shell, .survey-shell, .admin-shell { padding: 12px; }
   .landing-card, .survey-card, .admin-card { border-radius: 18px; }
-  .survey-card { min-height: calc(100dvh - 24px); }
-  .actions { padding-top: 28px; }
+  .landing-card { padding: 24px 18px; }
+  .survey-card { min-height: calc(100dvh - 24px); padding: 20px 16px; }
+  .admin-card { padding: 20px 16px; }
+  h1 { font-size: 24px; line-height: 1.65; }
+  h2 { font-size: 18px; }
+  #question-title { min-height: 0; font-size: 23px; line-height: 1.7; }
+  .intro { font-size: 17px; line-height: 2.05; }
+  .intro p { color: #111827; }
+  .choice { padding: 13px 12px; gap: 10px; font-size: 17px; line-height: 1.8; }
+  .choice input { width: 22px; height: 22px; }
+  .question-hint { font-size: 16px; line-height: 1.8; }
+  .multi-hint { display: block; width: 100%; }
+  .actions { padding-top: 24px; position: sticky; bottom: 0; background: var(--surface); }
+  .primary-button, .secondary-button { min-height: 50px; font-size: 17px; }
   .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .result-visual { grid-template-columns: 1fr; justify-items: center; }
   .result-visual > .result-values { width: 100%; }
   .primary-button, .secondary-button { flex: 1; padding-inline: 12px; }
   .admin-heading { align-items: flex-start; flex-direction: column; }
+  .metric { min-height: 94px; padding: 14px 12px; }
+  .metric strong { font-size: 24px; }
+  .metric span { font-size: 14px; line-height: 1.6; }
+  .result-question { padding: 12px; }
+  .result-question summary { font-size: 16px; }
+}
+
+@media (max-width: 380px) {
+  .actions { flex-direction: column-reverse; }
+  .primary-button, .secondary-button { width: 100%; }
+  .metrics-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
