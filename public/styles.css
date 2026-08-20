@@ -180,3 +180,15 @@ html.phone-device .admin-card {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+
+/* Full-width mobile questionnaire surface, including embedded/desktop-mode phones. */
+@media (hover: none) and (pointer: coarse), (max-width: 700px) {
+  html, body { width: 100vw !important; max-width: 100vw !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; }
+  #app, .survey-shell { width: 100vw !important; max-width: 100vw !important; min-width: 0 !important; }
+  .survey-shell { padding: 0 !important; display: block !important; }
+  .survey-card { width: 100vw !important; max-width: 100vw !important; min-width: 0 !important; min-height: 100dvh !important; border-radius: 0 !important; border-inline: 0 !important; box-shadow: none !important; }
+}
+html.phone-device body, html.phone-device #app, html.phone-device .survey-shell, html.phone-device .survey-card { width: 100vw !important; max-width: 100vw !important; min-width: 0 !important; }
+html.phone-device .survey-shell { padding: 0 !important; display: block !important; }
+html.phone-device .survey-card { min-height: 100dvh !important; border-radius: 0 !important; border-inline: 0 !important; box-shadow: none !important; }
